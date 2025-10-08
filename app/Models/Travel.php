@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 #[ObservedBy(TravelObserver::class)]
 class Travel extends Model
@@ -26,6 +27,16 @@ class Travel extends Model
         'numberOfDays',
         'numberOfNights',
     ];
+
+    protected function numberOfDays(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => [
+                'numberOfDays' => $value,
+                'numberOfNights' => $value - 1,
+            ],
+        );
+    }
 
     public function tours(): BelongsTo
     {
