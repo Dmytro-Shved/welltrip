@@ -3,8 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-
 
 class TravelFactory extends Factory
 {
@@ -14,7 +12,6 @@ class TravelFactory extends Factory
         $numberOfDays = random_int(3,10);
 
         return [
-            'slug' => Str::slug($name),
             'name' => $name,
             'description' => fake()->words(asText: true),
             'numberOfDays' => $numberOfDays,
