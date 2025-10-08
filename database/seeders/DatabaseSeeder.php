@@ -2,22 +2,44 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
+use App\Models\Travel;
+use App\Models\Tour;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+    public array $roles = [
+        'user',
+        'admin',
+        'editor',
+    ];
+
     public function run(): void
     {
-        // User::factory(10)->create();
+        foreach ($this->roles as $role){
+            Role::create([
+                'name' => $role,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $users = User::factory(3)->create();
+
+        $userRoleUuid = Role::where('name', 'user')->value('uuid');
+        $adminRoleUuid = Role::where('name', 'admin')->value('uuid');
+        $editorRoleUuid = Role::where('name', 'editor')->value('uuid');
+
+        $users->take(2)->each(function ($user) use ($userRoleUuid){
+            $user->roles()->attach($userRoleUuid);
+        });
+
+        $adminUser = $users->last();
+        $adminUser->roles()->attach([$adminRoleUuid, $editorRoleUuid]);
+
+        Travel::factory(5)->create();
+        Tour::factory(5)->create();
     }
 }
