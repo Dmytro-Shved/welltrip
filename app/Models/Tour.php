@@ -6,33 +6,32 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tour extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $table = 'tours';
-
-    protected $primaryKey = 'uuid';
-
     protected $fillable = [
+        'travel_id',
         'name',
-        'startingDate',
-        'endingDate',
+        'starting_date',
+        'ending_date',
         'price',
-        'travel_uuid'
     ];
 
+    public function travel(): BelongsTo
+    {
+        return $this->belongsTo(Travel::class);
+    }
+
+    // get price = cents / 100 = dollars
+    // set price =  dollars * 100 = cents
     protected function price(): Attribute
     {
         return Attribute::make(
             get: fn (string $value) => $value / 100,
+            set: fn (string $value) => $value * 100,
         );
-    }
-
-    public function travels(): HasMany
-    {
-        return $this->hasMany(Travel::class);
     }
 }

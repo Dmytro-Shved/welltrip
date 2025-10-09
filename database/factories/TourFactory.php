@@ -9,14 +9,14 @@ class TourFactory extends Factory
 {
     public function definition(): array
     {
-        $randomTravelUuid = Travel::inRandomOrder()->value('uuid');
+        $randomTravelUuid = Travel::inRandomOrder()->value('id');
 
         return [
+            'travel_id' => $randomTravelUuid,
             'name' => fake()->words(asText: true),
-            'startingDate' => now(),
-            'endingDate' => now()->subDay()->addDay(),
-            'price' => random_int(1500, 4500),
-            'travel_uuid' => $randomTravelUuid
+            'starting_date' => now(),
+            'ending_date' => now()->subDay()->addDay(),
+            'price' => random_int(150, 450),
         ];
     }
 }

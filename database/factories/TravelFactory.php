@@ -14,7 +14,7 @@ class TravelFactory extends Factory
         return [
             'name' => $name,
             'description' => fake()->words(asText: true),
-            'numberOfDays' => $numberOfDays,
+            'number_of_days' => $numberOfDays,
         ];
     }
 }

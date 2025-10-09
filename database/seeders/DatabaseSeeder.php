@@ -28,9 +28,9 @@ class DatabaseSeeder extends Seeder
 
         $users = User::factory(3)->create();
 
-        $userRoleUuid = Role::where('name', 'user')->value('uuid');
-        $adminRoleUuid = Role::where('name', 'admin')->value('uuid');
-        $editorRoleUuid = Role::where('name', 'editor')->value('uuid');
+        $userRoleUuid = Role::where('name', 'user')->value('id');
+        $adminRoleUuid = Role::where('name', 'admin')->value('id');
+        $editorRoleUuid = Role::where('name', 'editor')->value('id');
 
         $users->take(2)->each(function ($user) use ($userRoleUuid){
             $user->roles()->attach($userRoleUuid);

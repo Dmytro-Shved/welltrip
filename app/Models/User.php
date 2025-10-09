@@ -14,11 +14,10 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasApiTokens, HasUuids;
 
     protected $fillable = [
+        'name',
         'email',
         'password',
     ];
-
-    protected $primaryKey = 'uuid';
 
     protected $hidden = [
         'password',
@@ -33,6 +32,6 @@ class User extends Authenticatable
 
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class, 'role_user', 'user_uuid', 'role_uuid',);
+        return $this->belongsToMany(Role::class);
     }
 }

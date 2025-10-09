@@ -2,44 +2,48 @@
 
 namespace App\Models;
 
-use App\Observers\TravelObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[ObservedBy(TravelObserver::class)]
 class Travel extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Sluggable;
 
     protected $table = 'travels';
-
-    protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'is_public',
         'slug',
         'name',
         'description',
-        'numberOfDays',
-        'numberOfNights',
+        'number_of_days',
     ];
 
-    protected function numberOfDays(): Attribute
+    public function tours(): HasMany
+    {
+        return $this->hasMany(Tour::class);
+    }
+
+    protected function numberOfNights(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => [
-                'numberOfDays' => $value,
-                'numberOfNights' => $value - 1,
-            ],
+            get: fn (string $value, $attributes) => $attributes['number_of_days'] - 1,
         );
     }
 
-    public function tours(): BelongsTo
+    /**
+     * Return the sluggable configuration array for this model.
+     */
+    public function sluggable(): array
     {
-        return $this->belongsTo(Tour::class);
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
 }
