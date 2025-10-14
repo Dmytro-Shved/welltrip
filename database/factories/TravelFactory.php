@@ -8,13 +8,11 @@ class TravelFactory extends Factory
 {
     public function definition(): array
     {
-        $name = fake()->words(asText: true);
-        $numberOfDays = random_int(3,10);
-
         return [
-            'name' => $name,
-            'description' => fake()->words(asText: true),
-            'number_of_days' => $numberOfDays,
+            'name' => fake()->text(20),
+            'is_public' => fake()->boolean(),
+            'description' => fake()->text(100),
+            'number_of_days' => rand(1, 10)
         ];
     }
 }
