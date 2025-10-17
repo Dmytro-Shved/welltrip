@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 
 class TourController extends Controller
 {
-    public function index($slug)
+    public function index(Travel $travel)
     {
-        $tours = Tour::whereHas('travel', function ($q) use ($slug){
-            $q->where('slug', '=', $slug);
-        })->paginate();
+        $tours = $travel->tours()
+            ->orderBy('starting_date')
+            ->paginate();
 
         return TourResource::collection($tours);
     }
