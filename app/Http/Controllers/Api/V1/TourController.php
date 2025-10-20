@@ -11,30 +11,22 @@ class TourController extends Controller
 {
     public function index(Travel $travel, TourListRequest $request)
     {
-       $validated = $request->validated();
-
-        $priceFrom = $validated['priceFrom'] ?? null;
-        $priceTo = $validated['priceTo'] ?? null;
-        $dateFrom = $validated['dateFrom'] ?? null;
-        $dateTo = $validated['dateTo'] ?? null;
-        $priceOrder = $validated['priceOrder'] ?? null;
-
         $tours = $travel->tours()
-            ->when($priceFrom, function ($query) use ($priceFrom){
-               $query->where('price', '>=', $priceFrom * 100);
+            ->when($request->priceFrom, function ($query) use ($request) {
+               $query->where('price', '>=', $request->priceFrom * 100);
             })
-            ->when($priceTo, function ($query) use ($priceTo){
-                $query->where('price', '<=', $priceTo * 100);
+            ->when($request->priceTo, function ($query) use ($request) {
+                $query->where('price', '<=', $request->priceTo * 100);
             })
-            ->when($dateFrom, function ($query) use ($dateFrom){
-                $query->where('starting_date', '>=', $dateFrom);
+            ->when($request->dateFrom, function ($query) use ($request) {
+                $query->where('starting_date', '>=', $request->dateFrom);
             })
-            ->when($dateTo, function ($query) use ($dateTo){
-                $query->where('ending_date', '<=', $dateTo);
+            ->when($request->dateTo, function ($query) use ($request) {
+                $query->where('ending_date', '<=', $request->dateTo);
             })
-            ->when($priceOrder, function ($query) use ($priceOrder) {
-                    $query->orderBy('price', $priceOrder);
-                })
+            ->when($request->sortBy && $request->sortOrder, function ($query) use ($request) {
+                $query->orderBy($request->sortBy, $request->sortOrder);
+            })
             ->orderBy('starting_date')
             ->paginate();
 
