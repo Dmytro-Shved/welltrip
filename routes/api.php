@@ -11,4 +11,4 @@ Route::get('/user', function (Request $request) {
 
 Route::get('travels', [TravelController::class, 'index']);
 
-Route::get('travels/{travel:slug}/tours', [TourController::class, 'index']);
+Route::get('travels/{travel:slug}/tours/{priceFrom?}/{priceTo?}/{dateFrom?}/{dateTo?}/{priceOrder?}', [TourController::class, 'index']);
