@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
-use \App\Http\Controllers\Api\V1\Editor;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -20,7 +19,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
 });
 
 Route::prefix('editor')->middleware(['auth:sanctum', 'role:editor'])->group(function () {
-    Route::put('travels/{travel}', [Editor\TravelController::class, 'update']);
+    Route::put('travels/{travel}', [Admin\TravelController::class, 'update']);
 });
 
 Route::get('travels/{travel:slug}/tours', [TourController::class, 'index']);
