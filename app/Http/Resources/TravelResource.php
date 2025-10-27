@@ -18,7 +18,7 @@ class TravelResource extends JsonResource
             'slug' => $this->slug,
             'description' => str($this->description),
             'number_of_days' => $this->number_of_days,
-            'number_of_nights' => $this->number_of_nights
+            'number_of_nights' => $this->number_of_nights,
         ];
     }
 }

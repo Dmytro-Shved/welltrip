@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Role;
+use App\Models\Travel;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
-use App\Models\Travel;
 
 test('test public user cannot access adding travel', function () {
     $response = $this->postJson('/api/v1/admin/travels');
@@ -84,6 +84,6 @@ test('test updates travel successfully with valid data', function () {
 
     $response = $this->get('/api/v1/travels/');
     $response->assertJsonFragment([
-        'name' => 'My Updated Travel'
+        'name' => 'My Updated Travel',
     ]);
 });

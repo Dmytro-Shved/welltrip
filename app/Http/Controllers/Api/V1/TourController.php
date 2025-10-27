@@ -13,7 +13,7 @@ class TourController extends Controller
     {
         $tours = $travel->tours()
             ->when($request->priceFrom, function ($query) use ($request) {
-               $query->where('price', '>=', $request->priceFrom * 100);
+                $query->where('price', '>=', $request->priceFrom * 100);
             })
             ->when($request->priceTo, function ($query) use ($request) {
                 $query->where('price', '<=', $request->priceTo * 100);

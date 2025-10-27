@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Travel;
 use App\Models\Tour;
+use App\Models\Travel;
 
 test('tours list by travel slug returns correct tours', function () {
     $travel = Travel::factory()->create();
@@ -13,7 +13,6 @@ test('tours list by travel slug returns correct tours', function () {
     $response->assertJsonCount(1, 'data');
     $response->assertJsonFragment(['id' => $tour->id]);
 });
-
 
 test('tour price is shown correctly', function () {
     $travel = Travel::factory()->create();
@@ -40,7 +39,7 @@ test('tours list by travel slug returns paginated data correctly', function () {
     $response->assertJsonPath('meta.last_page', 2);
 });
 
-test('test tours list sorts by starting date correctly', function (){
+test('test tours list sorts by starting date correctly', function () {
     $travel = Travel::factory()->create();
 
     $earlierTour = Tour::factory()->create([
@@ -62,7 +61,7 @@ test('test tours list sorts by starting date correctly', function (){
     $response->assertJsonPath('data.1.id', $laterTour->id);
 });
 
-test('test tours list sorts by price correctly', function (){
+test('test tours list sorts by price correctly', function () {
     $travel = Travel::factory()->create();
 
     $expensiveTour = Tour::factory()->create([
@@ -92,7 +91,7 @@ test('test tours list sorts by price correctly', function (){
     $response->assertJsonPath('data.2.id', $expensiveTour->id);
 });
 
-test('test tours list filters by starting date correctly', function (){
+test('test tours list filters by starting date correctly', function () {
     $travel = Travel::factory()->create();
 
     $earlierTour = Tour::factory()->create([
@@ -141,8 +140,7 @@ test('test tours list filters by starting date correctly', function (){
     $response->assertJsonFragment(['id' => $laterTour->id]);
 });
 
-
-test('test tours list filters by price correctly', function (){
+test('test tours list filters by price correctly', function () {
     $travel = Travel::factory()->create();
 
     $expensiveTour = Tour::factory()->create([
@@ -189,7 +187,7 @@ test('test tours list filters by price correctly', function (){
     $response->assertJsonFragment(['id' => $expensiveTour->id]);
 });
 
-test('test tour list returns validation errors', function (){
+test('test tour list returns validation errors', function () {
     $travel = Travel::factory()->create();
 
     $response = $this->getJson('/api/v1/travels/'.$travel->slug.'/tours?dateFrom=abcde');

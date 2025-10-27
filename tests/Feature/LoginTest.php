@@ -10,7 +10,7 @@ test('test login returns token with valid credentials', function () {
 
     $response = $this->postJson('/api/v1/login', [
         'email' => $user->email,
-        'password' => 'password' // default password in the UserFactory
+        'password' => 'password', // default password in the UserFactory
     ]);
 
     $response->assertStatus(200);
@@ -20,7 +20,7 @@ test('test login returns token with valid credentials', function () {
 test('test login returns error with invalid credentials', function () {
     $response = $this->postJson('/api/v1/login', [
         'email' => 'noneexisting@gmail.com',
-        'password' => 'password'
+        'password' => 'password',
     ]);
 
     $response->assertStatus(422);

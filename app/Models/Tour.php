@@ -25,7 +25,7 @@ class Tour extends Model
         return $this->belongsTo(Travel::class);
     }
 
-    // get price = cents / 100 = dollars
+    // get price = cents divide 100 = dollars
     // set price =  dollars * 100 = cents
     protected function price(): Attribute
     {

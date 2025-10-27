@@ -6,7 +6,6 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class CreateUserCommand extends Command
@@ -33,7 +32,7 @@ class CreateUserCommand extends Command
         $roleName = $this->choice('Role of the new user', ['admin', 'editor'], 1);
         $role = Role::where('name', $roleName)->first();
 
-        if (! $role){
+        if (! $role) {
             $this->error('Role not found');
 
             return -1;
@@ -41,7 +40,7 @@ class CreateUserCommand extends Command
 
         $validator = Validator::make($user, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email','max:255', 'unique:users,email'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'min:8'],
         ]);
 
@@ -53,14 +52,14 @@ class CreateUserCommand extends Command
             return -1;
         }
 
-        DB::transaction(function () use ($user, $role, $roleName){
+        DB::transaction(function () use ($user, $role, $roleName) {
             $newUser = User::create($user);
             $newUser->roles()->attach($role->id);
 
-            if ($roleName == 'admin'){
+            if ($roleName == 'admin') {
                 $editorRole = Role::where('name', 'editor')->first();
 
-                if (! $editorRole){
+                if (! $editorRole) {
                     $this->error('Role not found');
 
                     return -1;

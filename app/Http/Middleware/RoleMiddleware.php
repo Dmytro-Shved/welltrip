@@ -13,12 +13,12 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (! auth()->check()){
+        if (! auth()->check()) {
             // Not logged in
             abort(401);
         }
 
-        if (! auth()->user()->roles()->where('name', $role)->exists()){
+        if (! auth()->user()->roles()->where('name', $role)->exists()) {
             // Logged in, but doesn't have permissions
             abort(403);
         }

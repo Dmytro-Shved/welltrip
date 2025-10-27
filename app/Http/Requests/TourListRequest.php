@@ -7,7 +7,6 @@ use Illuminate\Validation\Rule;
 
 class TourListRequest extends FormRequest
 {
-
     public function authorize(): bool
     {
         return true;
