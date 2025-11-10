@@ -21,8 +21,9 @@
 
     <style id="language-style">
         /* starts out as display none and is replaced with js later  */
-                    body .content .bash-example code { display: none; }
                     body .content .javascript-example code { display: none; }
+                    body .content .php-example code { display: none; }
+                    body .content .python-example code { display: none; }
             </style>
 
     <script>
@@ -36,7 +37,7 @@
 
 </head>
 
-<body data-languages="[&quot;bash&quot;,&quot;javascript&quot;]">
+<body data-languages="[&quot;javascript&quot;,&quot;php&quot;,&quot;python&quot;]">
 
 <a href="#" id="nav-button">
     <span>
@@ -48,8 +49,9 @@
             <img src="https://thumbs2.imgbox.com/ab/30/vdZyHVFO_t.png" alt="logo" class="logo" style="padding-top: 10px;" width="100%"/>
     
             <div class="lang-selector">
-                                            <button type="button" class="lang-button" data-language-name="bash">bash</button>
                                             <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+                                            <button type="button" class="lang-button" data-language-name="php">php</button>
+                                            <button type="button" class="lang-button" data-language-name="python">python</button>
                     </div>
     
     <div class="search">
@@ -122,7 +124,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: October 27, 2025</li>
+        <li>Last updated: November 10, 2025</li>
     </ul>
 </div>
 
@@ -136,8 +138,8 @@
 </aside>
 <pre><code>This documentation aims to provide all the information you need to work with Welltrip's API.
 
-&lt;aside&gt;As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).&lt;/aside&gt;</code></pre>
+As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
+You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</code></pre>
 
         <h1 id="authenticating-requests">Authenticating requests</h1>
 <p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
@@ -160,21 +162,6 @@ You can switch the language used with the tabs at the top right (or from the nav
 <blockquote>Example request:</blockquote>
 
 
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/api/v1/admin/travels" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"is_public\": true,
-    \"name\": \"b\",
-    \"description\": \"Et animi quos velit et fugiat.\",
-    \"number_of_days\": 16
-}"
-</code></pre></div>
-
-
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/v1/admin/travels"
@@ -187,7 +174,7 @@ const headers = {
 };
 
 let body = {
-    "is_public": true,
+    "is_public": false,
     "name": "b",
     "description": "Et animi quos velit et fugiat.",
     "number_of_days": 16
@@ -198,6 +185,50 @@ fetch(url, {
     headers,
     body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/admin/travels';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'is_public' =&gt; false,
+            'name' =&gt; 'b',
+            'description' =&gt; 'Et animi quos velit et fugiat.',
+            'number_of_days' =&gt; 16,
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:8000/api/v1/admin/travels'
+payload = {
+    "is_public": false,
+    "name": "b",
+    "description": "Et animi quos velit et fugiat.",
+    "number_of_days": 16
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()</code></pre></div>
 
 </span>
 
@@ -315,7 +346,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
@@ -367,21 +398,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <blockquote>Example request:</blockquote>
 
 
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/api/v1/editor/travels/019a0c31-bcec-727c-b913-6104d37f7445" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"is_public\": true,
-    \"name\": \"b\",
-    \"description\": \"Et animi quos velit et fugiat.\",
-    \"number_of_days\": 16
-}"
-</code></pre></div>
-
-
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/v1/editor/travels/019a0c31-bcec-727c-b913-6104d37f7445"
@@ -405,6 +421,50 @@ fetch(url, {
     headers,
     body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/editor/travels/019a0c31-bcec-727c-b913-6104d37f7445';
+$response = $client-&gt;put(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'is_public' =&gt; true,
+            'name' =&gt; 'b',
+            'description' =&gt; 'Et animi quos velit et fugiat.',
+            'number_of_days' =&gt; 16,
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:8000/api/v1/editor/travels/019a0c31-bcec-727c-b913-6104d37f7445'
+payload = {
+    "is_public": true,
+    "name": "b",
+    "description": "Et animi quos velit et fugiat.",
+    "number_of_days": 16
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('PUT', url, headers=headers, json=payload)
+response.json()</code></pre></div>
 
 </span>
 
@@ -603,18 +663,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <blockquote>Example request:</blockquote>
 
 
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/api/v1/login" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"email\": \"gbailey@example.net\",
-    \"password\": \"|]|{+-\"
-}"
-</code></pre></div>
-
-
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/v1/login"
@@ -635,6 +683,44 @@ fetch(url, {
     headers,
     body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/login';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'email' =&gt; 'gbailey@example.net',
+            'password' =&gt; '|]|{+-',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:8000/api/v1/login'
+payload = {
+    "email": "gbailey@example.net",
+    "password": "|]|{+-"
+}
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()</code></pre></div>
 
 </span>
 
@@ -761,20 +847,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <blockquote>Example request:</blockquote>
 
 
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/api/v1/admin/travels/019a0c31-bcec-727c-b913-6104d37f7445/tours" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"name\": \"b\",
-    \"starting_date\": \"2025-10-27T17:13:31\",
-    \"ending_date\": \"2051-11-20\",
-    \"price\": 4326.41688
-}"
-</code></pre></div>
-
-
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/v1/admin/travels/019a0c31-bcec-727c-b913-6104d37f7445/tours"
@@ -787,8 +859,8 @@ const headers = {
 
 let body = {
     "name": "b",
-    "starting_date": "2025-10-27T17:13:31",
-    "ending_date": "2051-11-20",
+    "starting_date": "2025-11-10T06:54:13",
+    "ending_date": "2051-12-04",
     "price": 4326.41688
 };
 
@@ -797,6 +869,48 @@ fetch(url, {
     headers,
     body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/admin/travels/019a0c31-bcec-727c-b913-6104d37f7445/tours';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'name' =&gt; 'b',
+            'starting_date' =&gt; '2025-11-10T06:54:13',
+            'ending_date' =&gt; '2051-12-04',
+            'price' =&gt; 4326.41688,
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:8000/api/v1/admin/travels/019a0c31-bcec-727c-b913-6104d37f7445/tours'
+payload = {
+    "name": "b",
+    "starting_date": "2025-11-10T06:54:13",
+    "ending_date": "2051-12-04",
+    "price": 4326.41688
+}
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()</code></pre></div>
 
 </span>
 
@@ -906,10 +1020,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="starting_date"                data-endpoint="POSTapi-v1-admin-travels--travel_id--tours"
-               value="2025-10-27T17:13:31"
+               value="2025-11-10T06:54:13"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2025-10-27T17:13:31</code></p>
+<p>Must be a valid date. Example: <code>2025-11-10T06:54:13</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>ending_date</code></b>&nbsp;&nbsp;
@@ -918,10 +1032,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="ending_date"                data-endpoint="POSTapi-v1-admin-travels--travel_id--tours"
-               value="2051-11-20"
+               value="2051-12-04"
                data-component="body">
     <br>
-<p>Must be a valid date. Must be a date after <code>starting_date</code>. Example: <code>2051-11-20</code></p>
+<p>Must be a valid date. Must be a date after <code>starting_date</code>. Example: <code>2051-12-04</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>price</code></b>&nbsp;&nbsp;
@@ -952,13 +1066,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <blockquote>Example request:</blockquote>
 
 
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/api/v1/travels?page=1" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
-
-
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/v1/travels"
@@ -979,6 +1086,42 @@ fetch(url, {
     method: "GET",
     headers,
 }).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/travels';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'page' =&gt; '1',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:8000/api/v1/travels'
+params = {
+  'page': '1',
+}
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers, params=params)
+response.json()</code></pre></div>
 
 </span>
 
@@ -1088,22 +1231,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <blockquote>Example request:</blockquote>
 
 
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/api/v1/travels/&amp;quot;first-travel&amp;quot;/tours" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"priceFrom\": \"\\\"123.45\\\"\",
-    \"priceTo\": \"\\\"234.56\\\"\",
-    \"dateFrom\": \"\\\"2023-06-01\\\"\",
-    \"dateTo\": \"\\\"2023-07-01\\\"\",
-    \"sortBy\": \"\\\"price\\\"\",
-    \"sortOrder\": \"\\\"asc\\\" or \\\"desc\\\"\"
-}"
-</code></pre></div>
-
-
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/v1/travels/&amp;quot;first-travel&amp;quot;/tours"
@@ -1128,6 +1255,52 @@ fetch(url, {
     headers,
     body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/travels/"first-travel"/tours';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'priceFrom' =&gt; '"123.45"',
+            'priceTo' =&gt; '"234.56"',
+            'dateFrom' =&gt; '"2023-06-01"',
+            'dateTo' =&gt; '"2023-07-01"',
+            'sortBy' =&gt; '"price"',
+            'sortOrder' =&gt; '"asc" or "desc"',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:8000/api/v1/travels/&amp;quot;first-travel&amp;quot;/tours'
+payload = {
+    "priceFrom": "\"123.45\"",
+    "priceTo": "\"234.56\"",
+    "dateFrom": "\"2023-06-01\"",
+    "dateTo": "\"2023-07-01\"",
+    "sortBy": "\"price\"",
+    "sortOrder": "\"asc\" or \"desc\""
+}
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers, json=payload)
+response.json()</code></pre></div>
 
 </span>
 
@@ -1305,8 +1478,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
     </div>
     <div class="dark-box">
                     <div class="lang-selector">
-                                                        <button type="button" class="lang-button" data-language-name="bash">bash</button>
                                                         <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+                                                        <button type="button" class="lang-button" data-language-name="php">php</button>
+                                                        <button type="button" class="lang-button" data-language-name="python">python</button>
                             </div>
             </div>
 </div>

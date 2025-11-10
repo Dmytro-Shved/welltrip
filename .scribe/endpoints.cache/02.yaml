@@ -54,7 +54,7 @@ endpoints:
         name: starting_date
         description: 'Must be a valid date.'
         required: true
-        example: '2025-10-27T17:13:31'
+        example: '2025-11-10T06:54:13'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -65,7 +65,7 @@ endpoints:
         name: ending_date
         description: 'Must be a valid date. Must be a date after <code>starting_date</code>.'
         required: true
-        example: '2051-11-20'
+        example: '2051-12-04'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -84,8 +84,8 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       name: b
-      starting_date: '2025-10-27T17:13:31'
-      ending_date: '2051-11-20'
+      starting_date: '2025-11-10T06:54:13'
+      ending_date: '2051-12-04'
       price: 4326.41688
     fileParameters: []
     responses: []
