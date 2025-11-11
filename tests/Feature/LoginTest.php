@@ -1,7 +1,7 @@
 <?php
 
 // 1. The Login is success with valid credentials
-// 2. The login returns validation errors 422 with invalid credentials
+// 2. The Login returns validation errors 422 with invalid credentials
 
 use App\Models\User;
 
