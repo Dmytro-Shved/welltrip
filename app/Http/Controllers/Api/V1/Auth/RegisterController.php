@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @group Auth endpoints
+ *
+ *  Authentication
  */
 class RegisterController extends Controller
 {
@@ -17,19 +20,15 @@ class RegisterController extends Controller
      *
      * Register the new user (without role).
      *
-     * @response {"access_token":"1|a9ZcYzIrLURVGx6Xe41HKj1CrNsxRxe4pLA2oISo"}
-     * * @response 422 {"error": "The name is required."}
+     * @response {"user": {"id": 1, "name": "John", "email": "john@doe.com"}}
+     * @response 422 {"message": "The given data was invalid.", "errors": {"email": ["The email has already been taken."]}}
      */
     public function __invoke(RegisterRequest $request)
     {
         $user = User::create($request->validated());
 
-        $device = substr($request->userAgent() ?? '', 0, 255);
-        $access_token = $user->createToken($device)->plainTextToken;
+        Auth::login($user);
 
-        return (new UserResource($user))
-            ->additional([
-                'access_token' => $access_token
-            ]);
+        return (new UserResource($user));
     }
 }

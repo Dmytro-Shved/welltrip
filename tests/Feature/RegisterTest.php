@@ -3,7 +3,7 @@
 // 1. The Register is success with valid credentials
 // 2. The Register returns validation errors 422 with invalid credentials
 
-test('test register returns token with valid credentials', function () {
+test('test register returns user with valid credentials', function () {
     $credentials = [
         'name' => 'User',
         'email' => 'user@gmail.com',
@@ -11,12 +11,11 @@ test('test register returns token with valid credentials', function () {
         'password_confirmation' => 'password12345',
     ];
 
-    $response = $this->postJson('/api/v1/register', $credentials);
+    $response = $this->postJson('/register', $credentials);
 
     $response->assertStatus(201);
-    $response->assertJsonStructure(['data', 'access_token']);
+    $response->assertJsonStructure(['data' => ['id', 'name', 'email']]);
     $response->assertJsonPath('data.name', 'User');
-    $this->assertNotEmpty($response->json('access_token'));
 });
 
 test('test register returns error with invalid credentials', function () {
@@ -27,7 +26,7 @@ test('test register returns error with invalid credentials', function () {
         'password_confirmation' => '0000000000',
     ];
 
-    $response = $this->postJson('/api/v1/register', $credentials);
+    $response = $this->postJson('/register', $credentials);
 
     $response->assertStatus(422);
 });

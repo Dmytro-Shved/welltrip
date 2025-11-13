@@ -3,7 +3,7 @@
 use App\Models\Tour;
 use App\Models\Travel;
 
-test('tours list by travel slug returns correct tours', function () {
+test('test tours list by travel slug returns correct tours', function () {
     $travel = Travel::factory()->create();
     $tour = Tour::factory()->create(['travel_id' => $travel->id]);
 
@@ -14,7 +14,7 @@ test('tours list by travel slug returns correct tours', function () {
     $response->assertJsonFragment(['id' => $tour->id]);
 });
 
-test('tour price is shown correctly', function () {
+test('test tour price is shown correctly', function () {
     $travel = Travel::factory()->create();
     Tour::factory()->create([
         'travel_id' => $travel->id,
@@ -28,7 +28,7 @@ test('tour price is shown correctly', function () {
     $response->assertJsonFragment(['price' => '123.45']);
 });
 
-test('tours list by travel slug returns paginated data correctly', function () {
+test('test tours list by travel slug returns paginated data correctly', function () {
     $travel = Travel::factory()->create();
     Tour::factory(16)->create(['travel_id' => $travel->id]);
 

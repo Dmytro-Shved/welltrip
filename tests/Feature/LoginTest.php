@@ -5,20 +5,20 @@
 
 use App\Models\User;
 
-test('test login returns token with valid credentials', function () {
+test('test login returns user with valid credentials', function () {
     $user = User::factory()->create();
 
-    $response = $this->postJson('/api/v1/login', [
+    $response = $this->postJson('/login', [
         'email' => $user->email,
         'password' => 'password', // default password in the UserFactory
     ]);
 
     $response->assertStatus(200);
-    $response->assertJsonStructure(['access_token']);
+    $response->assertJsonStructure(['data' => ['id', 'name', 'email']]);
 });
 
 test('test login returns error with invalid credentials', function () {
-    $response = $this->postJson('/api/v1/login', [
+    $response = $this->postJson('/login', [
         'email' => 'noneexisting@gmail.com',
         'password' => 'password',
     ]);

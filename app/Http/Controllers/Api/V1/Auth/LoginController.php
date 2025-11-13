@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @group Auth endpoints
+ *
+ *  Authentication
  */
 class LoginController extends Controller
 {
@@ -17,24 +19,19 @@ class LoginController extends Controller
      *
      * Login with the existing user.
      *
-     * @response {"access_token":"1|a9ZcYzIrLURVGx6Xe41HKj1CrNsxRxe4pLA2oISo"}
-     * * @response 422 {"error": "The provided credentials are incorrect."}
+     * @response {"user": {"id": 1, "name": "John", "email": "john@doe.com"}}
+     * @response 422 {"message": "The provided credentials are incorrect"}
      */
     public function __invoke(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        if (Auth::attempt($request->validated())){
+            $request->session()->regenerate();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-
+            return (new UserResource(Auth::user()));
+        }else{
             return response()->json([
-                'error' => 'The provided credentials are incorrect',
+                'message' => 'The provided credentials are incorrect'
             ], 422);
         }
-
-        $device = substr($request->userAgent() ?? '', 0, 255);
-
-        return response()->json([
-            'access_token' => $user->createToken($device)->plainTextToken,
-        ]);
     }
 }
