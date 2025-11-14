@@ -17,4 +17,3 @@ Route::prefix('editor')->middleware(['auth:sanctum', 'role:editor'])->group(func
 });
 
 Route::get('travels/{travel:slug}/tours', [TourController::class, 'index']);
-
