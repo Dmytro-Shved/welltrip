@@ -8,7 +8,7 @@ use App\Models\User;
 test('test login returns user with valid credentials', function () {
     $user = User::factory()->create();
 
-    $response = $this->postJson('/login', [
+    $response = $this->postJson('/api/v1/login', [
         'email' => $user->email,
         'password' => 'password', // default password in the UserFactory
     ]);
@@ -18,7 +18,7 @@ test('test login returns user with valid credentials', function () {
 });
 
 test('test login returns error with invalid credentials', function () {
-    $response = $this->postJson('/login', [
+    $response = $this->postJson('/api/v1/login', [
         'email' => 'noneexisting@gmail.com',
         'password' => 'password',
     ]);

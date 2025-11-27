@@ -11,7 +11,7 @@ test('test register returns user with valid credentials', function () {
         'password_confirmation' => 'password12345',
     ];
 
-    $response = $this->postJson('/register', $credentials);
+    $response = $this->postJson('/api/v1/register', $credentials);
 
     $response->assertStatus(201);
     $response->assertJsonStructure(['data' => ['id', 'name', 'email']]);
@@ -26,7 +26,7 @@ test('test register returns error with invalid credentials', function () {
         'password_confirmation' => '0000000000',
     ];
 
-    $response = $this->postJson('/register', $credentials);
+    $response = $this->postJson('/api/v1/register', $credentials);
 
     $response->assertStatus(422);
 });

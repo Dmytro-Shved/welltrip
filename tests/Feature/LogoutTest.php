@@ -5,12 +5,12 @@ use App\Models\User;
 test('test authenticated user can logout', function () {
     $user = User::factory()->create();
 
-    $this->postJson('/login', [
+    $this->postJson('/api/v1/login', [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $response = $this->postJson('/logout');
+    $response = $this->postJson('/api/v1/logout');
 
     $response->assertStatus(200);
     $response->assertJsonStructure(['message']);
@@ -19,12 +19,12 @@ test('test authenticated user can logout', function () {
 test('test user is unauthenticated after logout', function () {
     $user = User::factory()->create();
 
-    $this->postJson('/login', [
+    $this->postJson('/api/v1/login', [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $this->postJson('/logout');
+    $this->postJson('/api/v1/logout');
 
     $this->assertGuest();
 });
