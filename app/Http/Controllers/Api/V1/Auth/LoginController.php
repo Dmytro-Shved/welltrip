@@ -19,6 +19,9 @@ class LoginController extends Controller
      *
      * Login with the existing user.
      *
+     * @unauthenticated
+     * @bodyParam email string required The user's email. Example: john@doe.com
+     * @bodyParam password string required The user's password. Example: password
      * @response {"user": {"id": 1, "name": "John", "email": "john@doe.com"}}
      * @response 422 {"message": "The provided credentials are incorrect"}
      */

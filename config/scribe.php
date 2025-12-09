@@ -5,37 +5,25 @@ use Knuckles\Scribe\Config\Defaults;
 use Knuckles\Scribe\Config\AuthIn;
 use function Knuckles\Scribe\Config\{removeStrategies, configureStrategy};
 
-// Only the most common configs are shown. See the https://scribe.knuckles.wtf/laravel/reference/config for all.
-
 return [
-    // The HTML <title> for the generated documentation.
+    // Title for the page
     'title' => config('app.name') . ' API Documentation',
 
-    // A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
+    // Description
     'description' => 'The Welltrip API from Laravel Daily Hiring test Travel Agency API (Mentorship)',
 
-    // Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
-    'intro_text' => <<<INTRO
-        This documentation aims to provide all the information you need to work with Welltrip's API.
+    // Intro
+    'intro_text' => "This documentation aims to provide all the information you need to work with Welltrip API",
 
-        As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-        You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).
-    INTRO,
-
-    // The base URL displayed in the docs.
-    // If you're using `laravel` type, you can set this to a dynamic string, like '{{ config("app.tenant_url") }}' to get a dynamic base URL.
+    // Base URL
     'base_url' => config("app.url"),
 
     // Routes to include in the docs
     'routes' => [
         [
             'match' => [
-                // Match only routes whose paths match this pattern (use * as a wildcard to match any characters). Example: 'users/*'.
                 'prefixes' => ['api/*'],
-
-                // Match only routes whose domains match this pattern (use * as a wildcard to match any characters). Example: 'api.*'.
                 'domains' => ['*'],
-
                 'versions' => ['v1'],
             ],
 
@@ -44,21 +32,16 @@ return [
                 'login', 'register', 'logout'
             ],
 
-            // Exclude these routes even if they matched the rules above.
             'exclude' => [
-                // 'GET /health', 'admin.*'
+                //
             ],
         ],
     ],
 
-    // The type of documentation output to generate.
-    // - "static" will generate a static HTMl page in the /public/docs folder,
-    // - "laravel" will generate the documentation as a Blade view, so you can add routing and authentication.
-    // - "external_static" and "external_laravel" do the same as above, but pass the OpenAPI spec as a URL to an external UI template
     'type' => 'laravel',
 
-    // See https://scribe.knuckles.wtf/laravel/reference/config#theme for supported options
-    'theme' => 'default',
+    // Looks really better than default
+    'theme' => 'elements',
 
     'static' => [
         // HTML documentation, assets and Postman collection will be generated to this folder.
@@ -67,11 +50,12 @@ return [
     ],
 
     'laravel' => [
-        // Whether to automatically create a docs route for you to view your generated docs. You can still set up routing manually.
         'add_routes' => true,
 
-        // URL path to use for the docs endpoint (if `add_routes` is true).
-        // By default, `/docs` opens the HTML page, `/docs.postman` opens the Postman collection, and `/docs.openapi` the OpenAPI spec.
+        // URL path to use for the docs endpoint (if `add_routes` => true).
+        //  `/docs` => HTML page,
+        // `/docs.postman` => Postman collection
+        // `/docs.openapi` => OpenAPI spec.
         'docs_url' => '/docs',
 
         // Directory within `public` in which to store CSS and JS assets.
@@ -79,7 +63,7 @@ return [
         // If set, assets will be stored in `public/{{assets_directory}}`
         'assets_directory' => null,
 
-        // Middleware to attach to the docs endpoint (if `add_routes` is true).
+        // Middleware to attach to the docs endpoint (if `add_routes` => true).
         'middleware' => [],
     ],
 
@@ -93,10 +77,10 @@ return [
         'enabled' => true,
 
         // The base URL to use in the API tester. Leave as null to be the same as the displayed URL (`scribe.base_url`).
-        'base_url' => null,
+        'base_url' => 'http://localhost:8000',
 
         // [Laravel Sanctum] Fetch a CSRF token before each request, and add it as an X-XSRF-TOKEN header.
-        'use_csrf' => false,
+        'use_csrf' => true,
 
         // The URL to fetch the CSRF token from (if `use_csrf` is true).
         'csrf_url' => '/sanctum/csrf-cookie',
@@ -112,21 +96,21 @@ return [
         'default' => false,
 
         // Where is the auth value meant to be sent in a request?
-        'in' => AuthIn::BEARER->value,
+        'in' => 'header',
 
         // The name of the auth parameter (e.g. token, key, apiKey) or header (e.g. Authorization, Api-Key).
-        'name' => 'token',
+        'name' => 'Cookie',
 
         // The value of the parameter to be used by Scribe to authenticate response calls.
         // This will NOT be included in the generated documentation. If empty, Scribe will use a random value.
-        'use_value' => env('SCRIBE_AUTH_KEY'),
+        'use_value' => null,
 
         // Placeholder your users will see for the auth parameter in the example requests.
         // Set this to null if you want Scribe to use a random value as placeholder instead.
-        'placeholder' => '{YOUR_AUTH_KEY}',
+        'placeholder' => 'XSRF-TOKEN=...; laravel_session=...',
 
         // Any extra authentication-related info for your users. Markdown and HTML are supported.
-        'extra_info' => 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.',
+        'extra_info' => 'This API uses Laravel Sanctum SPA authentication, which is <strong>session-based</strong> and does not require API tokens. Make sure your browser and the API share the same top-level domain so Sanctum can manage session cookies.',
     ],
 
     // Example requests for each endpoint will be shown in each of these languages.

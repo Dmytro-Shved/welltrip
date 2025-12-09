@@ -4,17 +4,14 @@ use App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
+use App\Http\Controllers\Api\V1\Auth\UserController;
 use App\Http\Controllers\Api\V1\TourController;
 use App\Http\Controllers\Api\V1\TravelController;
-use App\Http\Resources\UserResource;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return (new UserResource($request->user()));
-})->middleware('auth:sanctum');
+Route::get('/user', UserController::class)->middleware('auth:sanctum');
 
-Route::middleware('web')->group(function () {
+Route::middleware(['web'])->group(function () {
     Route::post('login', LoginController::class);
     Route::post('register', RegisterController::class);
     Route::post('logout', LogoutController::class);
