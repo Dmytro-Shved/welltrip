@@ -17,7 +17,7 @@ class TravelRequest extends FormRequest
             'is_public' => 'boolean',
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
-            'number_of_days' => ['required', 'numeric', 'integer'],
+            'number_of_days' => ['required', 'numeric', 'min:1', 'max:999','integer'],
         ];
     }
 }
