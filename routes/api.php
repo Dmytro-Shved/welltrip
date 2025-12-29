@@ -21,6 +21,7 @@ Route::middleware(['web'])->group(function () {
 
 // List of public paginated Travels
 Route::get('travels', [TravelController::class, 'index']);
+Route::get('travels/{travel}', [TravelController::class, 'show']);
 
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(function () {

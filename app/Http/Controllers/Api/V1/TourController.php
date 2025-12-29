@@ -48,7 +48,7 @@ class TourController extends Controller
                 $query->orderBy($request->sortBy, $request->sortOrder);
             })
             ->orderBy('starting_date')
-            ->paginate(3);
+            ->paginate();
 
         return TourResource::collection($tours);
     }
