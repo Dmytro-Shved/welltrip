@@ -36,5 +36,6 @@ Route::prefix('editor')->middleware(['auth:sanctum', 'role:editor'])->group(func
     // Update Travel
     Route::put('travels/{travel}', [Admin\TravelController::class, 'update']);
 });
+
 // List of paginated Tours by the Travel slug (filter enabled)
 Route::get('travels/{travel:slug}/tours', [TourController::class, 'index']);
